@@ -3,7 +3,6 @@ global res, nameEdit, singerEdit, ordererEdit, attachedCombo, sourceCombo
 
 
 class MainWindow(PyQt.QWidget):
-
     def okPressed(self):
         res.append(nameEdit.toPlainText())
         res.append(singerEdit.toPlainText())
@@ -19,11 +18,11 @@ class MainWindow(PyQt.QWidget):
     def setupUI(self):
         global nameEdit, singerEdit, ordererEdit, attachedCombo, sourceCombo
 
+        # 窗口初始化
         self.setFixedSize(650, 350)
         self.move(300, 310)
         self.setWindowTitle("添加歌曲")
         self.setFixedSize(650, 350)
-
 
         # 3个文本框（name, singer, orderer)
         nameEdit = PyQt.QTextEdit(self)
@@ -41,8 +40,6 @@ class MainWindow(PyQt.QWidget):
         ordererEdit.move(30, 250)
         ordererEdit.setPlaceholderText("请输入你的名字（选填）")
 
-
-
         # 2个复选框（attached, source)
         attachedCombo = PyQt.QComboBox(self)
         attachedCombo.resize(150, 30)
@@ -53,8 +50,6 @@ class MainWindow(PyQt.QWidget):
         sourceCombo.resize(150, 30)
         sourceCombo.move(400, 150)
         sourceCombo.addItems(['网易云音乐', 'QQ音乐', '酷狗音乐', 'Bilibili'])
-
-
 
         # 5个标签（name, singer, orderer, attached, source)
         nameText = PyQt.QLabel(self)
@@ -78,8 +73,6 @@ class MainWindow(PyQt.QWidget):
         sourceText.move(400, 120)
         sourceText.setText("歌源")
 
-
-
         # 2个按钮
         okButton = PyQt.QPushButton(self)
         okButton.move(520, 300)
@@ -99,6 +92,7 @@ def main():
     mainWindow = MainWindow()
     mainWindow.setupUI()
     mainWindow.show()
+
     app.exec_()
     app.closingDown()
 

@@ -75,9 +75,10 @@ def AddSong():
                'attached': 0,
                'source': 0,
                'status': 0}
+
     NewSongInfo = m_AddSong.main()
     if NewSongInfo[0] == '':
-        print("您甚至没有输入歌名……")
+        print("添加歌曲失败！")
         os.system('pause')
         return
     newSong['name'] = NewSongInfo[0]
@@ -90,10 +91,10 @@ def AddSong():
         dailySongList.append(newSong)
         WriteSongList('daily')
     elif newSong['attached'] == '社团活动':
-        AASongList[-1].append(newSong)
+        AASongList.append(newSong)
         WriteSongList('AA')
     else:
-        FASongList[-1].append(newSong)
+        FASongList.append(newSong)
         WriteSongList('FA')
 
 
@@ -126,13 +127,20 @@ def DelAll():
 
 def ChoiceGet():
     while 1:
-        choice = int(input())
+        try:
+            choice = int(input())
+        except:
+            choice = -1
+
         if choice in [0, 1, 2, 3]:
             return choice
         elif choice in [4, 5, 6, 7] and user == 1:
             return choice
         else:
             print("请按要求输入！")
+            os.system("pause")
+
+        os.system('cls')
 
 
 def ManagerLogin():
@@ -141,11 +149,19 @@ def ManagerLogin():
 
 
 def AddAA():
-    pass
+    global AASongList
+    AASongList = []
+    AA_file = open('AASong.dat', 'wb')
+    pickle.dump(AASongList, AA_file)
+    AA_file.close()
 
 
 def AddFA():
-    pass
+    global FASongList
+    FASongList = []
+    FA_file = open('FASong.dat', 'wb')
+    pickle.dump(FASongList, FA_file)
+    FA_file.close()
 
 
 def main():
@@ -158,10 +174,12 @@ def main():
         ReadSongList()
         ShowMenu()
         choice = ChoiceGet()
+
+        # 选择分支
         if choice == 1:
             AddSong()
         elif choice == 2:
-            m_ShowSongList.main()
+            m_ShowSongList.main(dailySongList, AASongList, FASongList)
         elif choice == 3:
             if user == 0:
                 ManagerLogin()
