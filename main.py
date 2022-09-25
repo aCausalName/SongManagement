@@ -32,20 +32,23 @@ def ReadSongList():
     # AA = Association Activity  FA = Free Activity
     global dailySongList, AASongList, FASongList
 
-    daily_file = open('dailySong.dat', 'rb')
-    AA_file = open('AASong.dat', 'rb')
-    FA_file = open('FASong.dat', 'rb')
+    try:
+        daily_file = open('dailySong.dat', 'rb')
+        AA_file = open('AASong.dat', 'rb')
+        FA_file = open('FASong.dat', 'rb')
 
-    dailySongList = pickle.load(daily_file)
-    AASongList = pickle.load(AA_file)
-    FASongList = pickle.load(FA_file)
+        dailySongList = pickle.load(daily_file)
+        AASongList = pickle.load(AA_file)
+        FASongList = pickle.load(FA_file)
 
-    daily_file.close()
-    AA_file.close()
-    FA_file.close()
+        daily_file.close()
+        AA_file.close()
+        FA_file.close()
+    except:
+        DelAll()
 
 
-def WriteSongList(attached):
+def UpdateSongList(attached):
     global dailySongList, AASongList, FASongList
 
     if attached == 'daily':
@@ -77,6 +80,10 @@ def AddSong():
                'status': 0}
 
     NewSongInfo = m_AddSong.main()
+    if not NewSongInfo:
+        print("添加歌曲失败！")
+        os.system('pause')
+        return
     if NewSongInfo[0] == '':
         print("添加歌曲失败！")
         os.system('pause')
@@ -89,13 +96,15 @@ def AddSong():
 
     if newSong['attached'] == '日常放歌':
         dailySongList.append(newSong)
-        WriteSongList('daily')
+        UpdateSongList('daily')
     elif newSong['attached'] == '社团活动':
         AASongList.append(newSong)
-        WriteSongList('AA')
+        UpdateSongList('AA')
     else:
         FASongList.append(newSong)
-        WriteSongList('FA')
+        UpdateSongList('FA')
+    print('添加成功！')
+    os.system('pause')
 
 
 def DelSong():
@@ -105,23 +114,28 @@ def DelSong():
 def DelAll():
     global dailySongList, AASongList, FASongList
 
-    dailySongList = []
-    AASongList = []
-    FASongList = []
+    print('警告：本操作会所有歌曲')
+    print('是否继续？【1-继续，其余-取消】')
+    if input == '1':
+        dailySongList = []
+        AASongList = []
+        FASongList = []
 
-    daily_file = open('dailySong.dat', 'wb')
-    AA_file = open('AASong.dat', 'wb')
-    FA_file = open('FASong.dat', 'wb')
+        daily_file = open('dailySong.dat', 'wb')
+        AA_file = open('AASong.dat', 'wb')
+        FA_file = open('FASong.dat', 'wb')
 
-    pickle.dump(dailySongList, daily_file)
-    pickle.dump(AASongList, AA_file)
-    pickle.dump(FASongList, FA_file)
+        pickle.dump(dailySongList, daily_file)
+        pickle.dump(AASongList, AA_file)
+        pickle.dump(FASongList, FA_file)
 
-    daily_file.close()
-    AA_file.close()
-    FA_file.close()
+        daily_file.close()
+        AA_file.close()
+        FA_file.close()
 
-    print("清除成功！")
+        print("清除成功！")
+    else:
+        print("已取消！")
     os.system('pause')
 
 
@@ -150,18 +164,32 @@ def ManagerLogin():
 
 def AddAA():
     global AASongList
-    AASongList = []
-    AA_file = open('AASong.dat', 'wb')
-    pickle.dump(AASongList, AA_file)
-    AA_file.close()
+
+    print('警告：本操作会覆盖目前已经存在的社团活动歌曲')
+    print('是否继续？【1-继续，其余-取消】')
+    if input() == '1':
+        AASongList = []
+        AA_file = open('AASong.dat', 'wb')
+        pickle.dump(AASongList, AA_file)
+        AA_file.close()
+    else:
+        print('已取消！')
+    os.system('pause')
 
 
 def AddFA():
     global FASongList
-    FASongList = []
-    FA_file = open('FASong.dat', 'wb')
-    pickle.dump(FASongList, FA_file)
-    FA_file.close()
+
+    print('警告：本操作会覆盖目前已经存在的自由活动歌曲')
+    print('是否继续？【1-继续，其余-取消】')
+    if input == '1':
+        FASongList = []
+        FA_file = open('FASong.dat', 'wb')
+        pickle.dump(FASongList, FA_file)
+        FA_file.close()
+    else:
+        print('已取消！')
+    os.system('pause')
 
 
 def main():
@@ -199,6 +227,5 @@ def main():
 
 
 if __name__ == '__main__':
-    global res
-    global user
+    global res, user
     main()

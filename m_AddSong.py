@@ -3,13 +3,6 @@ global res, nameEdit, singerEdit, ordererEdit, attachedCombo, sourceCombo
 
 
 class MainWindow(PyQt.QWidget):
-    def okPressed(self):
-        res.append(nameEdit.toPlainText())
-        res.append(singerEdit.toPlainText())
-        res.append(ordererEdit.toPlainText())
-        res.append(attachedCombo.currentText())
-        res.append(sourceCombo.currentText())
-        return res
 
     def __init__(self):
         PyQt.QWidget.__init__(self, None)
@@ -52,41 +45,51 @@ class MainWindow(PyQt.QWidget):
         sourceCombo.addItems(['网易云音乐', 'QQ音乐', '酷狗音乐', 'Bilibili'])
 
         # 5个标签（name, singer, orderer, attached, source)
-        nameText = PyQt.QLabel(self)
-        nameText.move(30, 20)
-        nameText.setText("歌名")
+        self.nameText = PyQt.QLabel(self)
+        self.nameText.move(30, 20)
+        self.nameText.setText("歌名")
 
-        singerText = PyQt.QLabel(self)
-        singerText.move(30, 120)
-        singerText.setText("歌手")
+        self.singerText = PyQt.QLabel(self)
+        self.singerText.move(30, 120)
+        self.singerText.setText("歌手")
 
-        ordererText = PyQt.QLabel(self)
-        ordererText.resize(300, 30)
-        ordererText.move(30, 220)
-        ordererText.setText("点歌人（以保证你的歌曲出现问题时能及时与你联系）")
+        self.ordererText = PyQt.QLabel(self)
+        self.ordererText.resize(300, 30)
+        self.ordererText.move(30, 220)
+        self.ordererText.setText("点歌人（以保证你的歌曲出现问题时能及时与你联系）")
 
-        attachedText = PyQt.QLabel(self)
-        attachedText.move(400, 20)
-        attachedText.setText("将歌曲保存在")
+        self.attachedText = PyQt.QLabel(self)
+        self.attachedText.move(400, 20)
+        self.attachedText.setText("将歌曲保存在")
 
-        sourceText = PyQt.QLabel(self)
-        sourceText.move(400, 120)
-        sourceText.setText("歌源")
+        self.sourceText = PyQt.QLabel(self)
+        self.sourceText.move(400, 120)
+        self.sourceText.setText("歌源")
 
         # 2个按钮
-        okButton = PyQt.QPushButton(self)
-        okButton.move(520, 300)
-        okButton.setText("确定")
-        okButton.clicked.connect(self.close)
+        self.okButton = PyQt.QPushButton(self)
+        self.okButton.move(520, 300)
+        self.okButton.setText("确定")
+        self.okButton.clicked.connect(self.okPressed)
 
-        cancelButton = PyQt.QPushButton(self)
-        cancelButton.move(400, 300)
-        cancelButton.setText("取消")
-        cancelButton.clicked.connect(self.close)
+        self.cancelButton = PyQt.QPushButton(self)
+        self.cancelButton.move(400, 300)
+        self.cancelButton.setText("取消")
+        self.cancelButton.clicked.connect(self.close)
+
+
+    def okPressed(self):
+        res.append(nameEdit.toPlainText())
+        res.append(singerEdit.toPlainText())
+        res.append(ordererEdit.toPlainText())
+        res.append(attachedCombo.currentText())
+        res.append(sourceCombo.currentText())
+        self.close()
 
 
 def main():
     global res
+    res = []
 
     app = PyQt.QApplication([])
     mainWindow = MainWindow()
@@ -95,9 +98,6 @@ def main():
 
     app.exec_()
     app.closingDown()
-
-    res = []
-    res = mainWindow.okPressed()
 
     return res
 
