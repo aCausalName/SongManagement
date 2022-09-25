@@ -116,7 +116,7 @@ def DelAll():
 
     print('警告：本操作会所有歌曲')
     print('是否继续？【1-继续，其余-取消】')
-    if input == '1':
+    if input() == '1':
         dailySongList = []
         AASongList = []
         FASongList = []
@@ -182,7 +182,7 @@ def AddFA():
 
     print('警告：本操作会覆盖目前已经存在的自由活动歌曲')
     print('是否继续？【1-继续，其余-取消】')
-    if input == '1':
+    if input() == '1':
         FASongList = []
         FA_file = open('FASong.dat', 'wb')
         pickle.dump(FASongList, FA_file)
